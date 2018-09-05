@@ -5,7 +5,7 @@ library(RColorBrewer)
 library(randomForest)
 
 
-setwd("C:/Geetha/Kaggle/Bike Rental")
+setwd("....Kaggle/Bike Rental")
 
 train <- read.csv(file.path(getwd(),"train.csv" ))
 test <- read.csv(file.path(getwd(),"test.csv" ))
@@ -175,13 +175,8 @@ data$day_type <- as.factor(data$day_type)
 train <- data[as.integer(substr(data$datetime,9,10))<20,]
 test <- data[as.integer(substr(data$datetime,9,10))>19,]
 
-#dependent variables have natural outliers so we will predict log of dependent variables
-
-train$logreg <- log(train$registered)
 set.seed(415)
 fit1 <- randomForest(registered~hour +workingday+day+holiday+ day_type +temp_reg+humidity+atemp+windspeed+season+weather+dp_reg+weekend+year+year_part, data=train,importance=TRUE, ntree=250)
-str(train)
-
 pred1 <- predict(fit1, test)
 test$registered <- pred1
 
